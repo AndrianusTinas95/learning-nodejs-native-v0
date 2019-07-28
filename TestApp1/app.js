@@ -1,13 +1,21 @@
-// object reference 
-// nilai induk akan berubah
-
-var myObj ={
-        name:'Tinas',
-        age:23
+// object this
+var myObj = {
+    name : "Tinas",
+    age :23,
+    print:function(){
+        console.log(this.name + ' is ' +this.age +' years old');
+        console.log(this===myObj);
+    }
 }
 
-// console.log(myObj);
-var obj2 = myObj;
-obj2.age = 19;
+// myObj.print();
 
-console.log(myObj);
+function myFunction(){
+    console.log(" I am My Function");
+    console.log(this===global);
+}
+
+
+myObj.print();
+console.log('------------');
+myFunction();
