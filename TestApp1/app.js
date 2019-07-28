@@ -1,21 +1,11 @@
-// object this
-var myObj = {
-    name : "Tinas",
-    age :23,
-    print:function(){
-        console.log(this.name + ' is ' +this.age +' years old');
-        console.log(this===myObj);
-    }
-}
+// modul
+var modul1 = require('./modul1.js');
 
-// myObj.print();
+// console.log(modul1.myName); 
+// console.log(modul1.age); 
 
-function myFunction(){
-    console.log(" I am My Function");
-    console.log(this===global);
-}
+// modul1.print;
 
-
-myObj.print();
-console.log('------------');
-myFunction();
+console.log(modul1.name);
+console.log(modul1.age);
+modul1.print();
