@@ -1,11 +1,9 @@
-// modul
-var modul1 = require('./modul1.js');
+// shered module
 
-// console.log(modul1.myName); 
-// console.log(modul1.age); 
+// require('./andri.js'); //panggil skill dan set language jadi php
+// console.log("--------------------");
+// require('./tinas.js'); //panggil skill ==> otomatis skill jadi php
 
-// modul1.print;
-
-console.log(modul1.name);
-console.log(modul1.age);
-modul1.print();
+require('./andri.js'); //panggil skill dan set language jadi php
+console.log("--------------------");
+require('./tinas.js'); //panggil skill ==> otomatis skill jadi php
