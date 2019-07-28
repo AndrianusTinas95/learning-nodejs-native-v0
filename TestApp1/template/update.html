@@ -1,20 +1,20 @@
 {% extends 'app.html'%}
 {% block title %} {{title}} {% endblock %}
 {% block contect %}
-    <h2>Tambah Data</h2>
+    <h2>Update Data</h2>
     <form action="" method="post">
         <table style="width: 400px;">
             <tr>
                 <td><label for="name">Nim</label> </td>
-                <td><input type="text" name="nim" id="nim"></td>
+                <td><input type="text" name="nim" id="nim" value="{{data.nim}}" disabled></td>
             </tr>
             <tr>
                 <td><label for="nama">Nama</label> </td>
-                <td><input type="text" name="nama" id="nama"></td>
+                <td><input type="text" name="nama" id="nama" value="{{data.nama}}"></td>
             </tr>
             <tr>
                 <td><label for="alamat">Alamat</label></td>
-                <td><textarea  name="alamat" id="alamat"> </textarea></td>
+                <td><textarea  name="alamat" id="alamat" >{{data.alamat}} </textarea></td>
             </tr>
             <tr>
                 <td colspan="2">

@@ -3,6 +3,7 @@ var url     = require("url");
 var router  = require("routes")();
 var view    = require("swig");
 var mysql   = require('mysql');
+var qString = require("querystring");
 
 var conn = mysql.createConnection({
     host:'localhost',
@@ -12,63 +13,109 @@ var conn = mysql.createConnection({
     password:""
 });
 
-// router.addRoute('/',function(req,res){
-//     var html =view.compileFile('./TestApp1/template/index.html')({
-//         title :"index",
-//         data : "ini data"
-//     });
-//     res.writeHead(200,{"Cotent-Type":"text/html"});
-//     res.end(html);  
-// });
+
 router.addRoute('/',function(req,res){
     conn.query("select * from mahasiswa",function(err,rows,field){
         if(err) throw err;
       
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        res.end(JSON.stringify(rows));
+        var html =view.compileFile('./TestApp1/template/index.html')({
+            title :"index",
+            data : rows
+        });
+
+        res.writeHead(200,{"Cotent-Type":"text/html"});
+        res.end(html);
     });
 });
 
 router.addRoute('/insert',function(req,res){
     
-    conn.query("insert into mahasiswa set ?",{
-        nim:"H1051141013",
-        nama:" lagi",
-        alamat:"tes  lagi"
-    },function(err,field){
-        if(err) throw err;
-
-        console.log(field.affectedRows);
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        res.end(JSON.stringify(field.affectedRows));
-    });
     
+    if(req.method.toUpperCase() == "POST"){
+        // get data
+        var data_post = "";
+        req.on('data',function(chuncks){
+            data_post += chuncks;
+        })
+
+        // save on database 
+        req.on('end',function(){
+            data_post = qString.parse(data_post);
+            conn.query("insert into mahasiswa set ?", data_post,
+                function(err,field){
+                    if(err) throw err;
+
+                    res.writeHead(302,{"Location":"/"});
+                    res.end();
+                }
+            );
+        });
+
+    }else{
+        var html =view.compileFile('./TestApp1/template/form.html')();
+        res.writeHead(200,{"Cotent-Type":"text/html"});
+        res.end(html);
+    }
 });
 
-router.addRoute('/update',function(req,res){
+router.addRoute('/update/:nim',function(req,res){
+ 
+        conn.query("select * from mahasiswa where ? ",{
+                nim : this.params.nim
+            },
+            function(err,rows,field){
+                if(err) throw err;
+                
+                var data = rows[0];
+
+                if (rows.length) {
+                    if(req.method.toUpperCase() == "POST"){
+                        var data_post = "";
+                        
+                        req.on('data',function(chuncks){
+                            data_post +=chuncks;
+                        });
+
+                        req.on('end',function(){
+                            data_post = qString.parse(data_post);
+
+                            conn.query("update mahasiswa set ? where ?",
+                            [
+                                data_post,
+                                {nim:data.nim}
+                            ],
+                            function(err,field){
+                                if (err) throw err;
     
-    conn.query("update mahasiswa set ? where ?",[
-        {nama:"nanas"},
-        {nim:"h1051141029"}
-    ],function(err,field){
-        if (err) throw err;
-
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        res.end(field.affectedRows+ " updated");
-    })
-
+                                res.writeHead(302,{"Location":"/"});
+                                res.end();
+                            });
+                        });
+                    }else{
+                        var html =view.compileFile('./TestApp1/template/update.html')({
+                            data:data
+                        });
+                        
+                        res.writeHead(200,{"Cotent-Type":"text/html"});
+                        res.end(html);
+                    }
+                } else {
+                    res.writeHead(404,{"Content-Type":"text/plain"})
+                    res.end("Page Not Found !!")                
+                }
+            }
+        );
 });
 
-router.addRoute('/delete',function(req,res){
+router.addRoute('/delete/:nim',function(req,res){
     
     conn.query("delete from mahasiswa where ?",{
-        nim:"h1051141029"
+        nim:this.params.nim
     },function(err,field) {
         if( err) throw err;
 
-        res.writeHead(200,{"Content-Type":"text/plain"});
-        res.end(field.affectedRows + " delete");
-
+        res.writeHead(302,{"Location":"/"});
+        res.end();
     });
 
 });
