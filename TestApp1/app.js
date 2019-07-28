@@ -1,25 +1,28 @@
 var http    = require("http");
 var url     = require("url");
-var routes  = require("routes")();
+var router  = require("routes")();
+var view    = require("swig");
 
-routes.addRoute('/',function(req,res){
-    res.writeHead(200,{"Content-Type":"text/plain"});
-    res.end("index page");
+router.addRoute('/',function(req,res){
+    var html =view.compileFile('./TestApp1/template/index.html')({
+        title :"index",
+        data : "ini data"
+    });
+    res.writeHead(200,{"Cotent-Type":"text/html"});
+    res.end(html);  
 });
 
-routes.addRoute('/profile/:name?/:city?',function(req,res){
-    res.writeHead(200,{"Content-Type":"text/plain"});
-    res.end("profile page name is "+ this.params.name + " city " + this.params.city);
- });
-
-routes.addRoute('/contact',function(req,res){
-    res.writeHead(200,{"Content-Type":"text/plain"});
-    res.end("Contact Page");
+router.addRoute('/contact',function(req,res){
+    var html =view.compileFile('./TestApp1/template/contact.html')({
+        title:"contact"
+    });
+    res.writeHead(200,{"Cotent-Type":"text/html"});
+    res.end(html);  
 });
 
 http.createServer(function(req,res){
     var path =url.parse(req.url).pathname;
-    var match = routes.match(path);
+    var match = router.match(path);
     
     if(match){
         match.fn(req,res,match);
