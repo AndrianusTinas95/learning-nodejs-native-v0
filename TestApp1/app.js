@@ -1,24 +1,61 @@
 var http    = require("http");
+var url     = require("url");
 var fs      = require("fs");
+var qString = require("querystring");
 
 http.createServer(function(req,res){
-        var kode = 0;
-        var file = "";
+    if(req.url != "/favicon.ico"){
+
+        var access =url.parse(req.url);
         
-        if(req.url == "/"){
-            kode = 200; 
-            file = 'index.html'; 
-        }else if(req.url == "/contact"){
-            kode = 200; 
-            file = 'contact.html'; 
-            
+        if(access.pathname == "/"){
+            var data = qString.parse(access.query);
+
+            res.writeHead(200,{"Content-Type":"text/plain"});
+            res.end(JSON.stringify(data));
+        }else if(access.pathname=="/form"){
+            if(req.method.toUpperCase() == "POST"){
+                // post
+                var data_post = "";
+                req.on('data',function(chunck){
+                    data_post +=chunck;
+                });
+
+                req.on('end',function(){
+                    data_post = qString.parse(data_post);
+                    res.writeHead(200,{"Content-Type":"text/plain"});
+                    res.end(JSON.stringify(data_post));
+                });
+
+            }else{//GET
+                res.writeHead(200,{"Content-Type":"text/html"});
+                fs.createReadStream("./TestApp1/template/form.html").pipe(res);
+            }
         }else{
-            // 404
-            kode = 404; 
-            file = '404.html'; 
+            res.writeHead(200,{"Content-Type":"text/plain"});
+            res.end("Page not Found");
         }
-        res.writeHead(kode,{"Content-Type" : "text/html"});
-        fs.createReadStream('./TestApp1/template/'+file).pipe(res);
+
+        // var file = "";
+        // var kode = 200;
+        // var query ="";
+
+        // if(access.pathname == "/"){
+        //     kode = 200;
+        //     file ="TestApp1/template/index.html";
+            
+        // }else if(access.pathname == "/contact"){
+        //     kode = 200;
+        //     file ="TestApp1/template/contact.html";
+        // }else{
+        //     kode = 400;
+        //     file ="TestApp1/template/404.html";
+        // }
+        
+        // res.writeHead(kode,{"Content-Type" : "text/html"});
+        // fs.createReadStream(file).pipe(res);
+    }
+
 }).listen(8888);
 
 console.log("Server is running....");
