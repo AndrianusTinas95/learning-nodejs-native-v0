@@ -1,3 +1,5 @@
-module.exports = {
-    language : "", 
+module.exports = function(){
+    return {
+        language : "", 
+    }
 }

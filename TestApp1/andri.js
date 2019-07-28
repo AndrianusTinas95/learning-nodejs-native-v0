@@ -1,5 +1,7 @@
 var skill = require('./skill.js');
 
-skill.language = "PHP";
+var skill_obj = skill();
 
-console.log("Andri can " +skill.language);
+skill_obj.language = "PHP";
+
+console.log("Andri can " +skill_obj.language);
