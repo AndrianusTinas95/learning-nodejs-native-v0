@@ -1,79 +1,33 @@
-// var satu     = 10 ;
-// var dua      = 20 ;
-
-// var tiga = satu + dua ;
-// console.log("penjumlahan " + satu + " dan " + dua + " adalah " + tiga)
-
-// var nim = "H1051141029";
-// if(nim == "H1051141029"){
-    //     console.log("Andrianus Tinas");
-    // }else{
-        //     console.log("bukan tinas");
-        // }
-        
-
-// var nim = "H1051141029";
-// switch(nim){
-//     case "H1051141029":
-//         console.log("Tinas");
-//         break;
-//     case "H1051141060":
-//         console.LOG("Deni");
-//         break;
-//     default:
-//         console.log("Tidak dikenali");
+// setTimeout(function(){
+//     console.log("saya ditampilakan denagan jeda 3 detik");
+// },3000);
+// function Order(id){
+//     console.log("ID Order "+id);
+//     ProsesOrder(id);
 // }
 
-//looping
-
-// looping for 
-// var n = 10;
-// for(var i = 0; i < n ; i++){
-//     console.log("Perulangan ke " + i);
+// function ProsesOrder(idOrder){
+//     setTimeout(function(){
+//         console.log("ID Order "+ idOrder +" Prosessed");
+//     },3000);
 // }
 
-// looping while
-// var n = 10;
-// var i = 0;
-// while(i<n){
-//     console.log("Perulangan ke  " + i++);
-// }
+// Order(101);//first exceusion
+// Order(102);//secon exsecution
+// Order(103);//last exsecusion
 
-// array
-// var arr = [20,30,40];
+function Order(id,timeOut){
+    console.log("ID Order "+id);
+    ProsesOrder(id,timeOut);
+}
 
-// console.log(arr);
+function ProsesOrder(idOrder,timeOut){
+    setTimeout(function(){
+        console.log("ID Order "+ idOrder +" Prosessed");
+    },timeOut);
+}
 
-// for(var i =0; i < arr.length ; i++){
-//     console.log(arr[i]);
-// }
-
-// object
-// var json =[
-//     {
-//         name : "Tinas",
-//         age  : "23"
-//     },
-//     {
-//         name : "Uul",
-//         age  : "27"
-//     }
-// ];
-
-// for(var i = 0 ; i <json.length ; i++){
-//     console.log(json[i].name + "  age : " + json[i].age);
-// }
-
-// function
-// function TinasFunction(){
-//     // console.log(" I am a function ");
-//     return "I am a function";
-// }
-
-// TinasFunction();
-// console.log(TinasFunction());
-
-
-
-
+Order(101,5000);//last exsecusion
+Order(102,2000);//first exsecusion
+Order(103,3000);//secon exsecusion
 
